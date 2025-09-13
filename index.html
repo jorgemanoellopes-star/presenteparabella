@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Presente para Isabelle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+      margin-top: 100px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .caixa {
+      background: white;
+      display: inline-block;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      max-width: 450px;
+      transition: opacity 0.6s ease;
+      opacity: 1;
+      position: relative;
+    }
+    h1, h2 { margin-bottom: 20px; }
+    .pedido {
+      background: #e91e63;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+    .botoes {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+    }
+    .botoes button {
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .sim { background: #4CAF50; color: white; position: relative; }
+    .nao { background: #f44336; color: white; }
+    .surpresaBtn { background: #ff9800; color: white; margin-top: 20px; }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes coracao {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+    }
+    .coracao { position: absolute; font-size: 24px; color: #e91e63; animation: coracao 3s linear forwards; pointer-events: none; }
+    .gato { position: absolute; width: 60px; pointer-events: none; animation: coracao 3s linear forwards; }
+  </style>
+</head>
+<body>
+  <div class="caixa" id="conteudo"></div>
+
+  <script>
+    function trocarConteudo(novoHTML) { document.getElementById("conteudo").innerHTML = novoHTML; }
+
+    function telaInicial() {
+      trocarConteudo(`
+        <h2>Esse é um presente confidencial e exclusivo.<br>
+        Deseja abri-lo?</h2>
+        <div class="botoes">
+          <button onclick="mostrarGostos()">SIM</button>
+          <button onclick="alert('Ok, fica pra depois 😊')">NÃO</button>
+        </div>
+      `);
+    }
+
+    function mostrarGostos() {
+      const relampagoHTML = `<button class="surpresaBtn" onclick="mostrarRelampago()">🌟 Relâmpago Especial 🌟</button>`;
+
+      trocarConteudo(`
+        <h1>💖 Isabelle 💖</h1>
+        <p>Algumas coisas que você gosta:</p>
+        <ul style="text-align:left; font-size:16px; line-height:1.6;">
+          <li>🐱 Gatos</li>
+          <li>🎬 Doramas</li>
+          <li>🌷 Tulipas</li>
+          <li>👨‍👩‍👧‍👦 Seus primos: Enzo Miguel, Arthur Miguel, Luiza e Théo</li>
+        </ul>
+        ${relampagoHTML}
+        <button class="surpresaBtn" onclick="revelacaoFutura()">Surpresa Final 🎁</button>
+      `);
+    }
+
+    function mostrarRelampago() {
+      trocarConteudo(`
+        <h2>✨ Relâmpago Especial ✨</h2>
+        <p>Essa aba especial está disponível agora!</p>
+        <button class="surpresaBtn" onclick="revelacaoFutura()">Continuar para a surpresa final 🎁</button>
+      `);
+    }
+
+    function revelacaoFutura() {
+      const hoje = new Date();
+      const dataFinal = new Date('2028-01-21');
+
+      if (hoje >= dataFinal) {
+        mostrarAbaEspecial(); // conteúdo final liberado
+      } else {
+        trocarConteudo(`
+          <h2>🎁 Surpresa Final 🎁</h2>
+          <p>O conteúdo final será revelado apenas em <strong>21 de janeiro de 2028</strong>!</p>
+          <p>Volte nesta data para ver a surpresa completa 💖</p>
+        `);
+      }
+    }
+
+    function mostrarAbaEspecial() {
+      trocarConteudo(`
+        <h2 style="animation: fadeIn 1s forwards;">Aba Especial</h2>
+        <div class="pedido">🌹 Isabelle, aceita namorar comigo? 🌹</div>
+        <div class="botoes">
+          <button id="btnSim" class="sim" onclick="respostaSim()">SIM</button>
+          <button class="nao" onclick="respostaNao()">NÃO</button>
+        </div>
+      `);
+      ativarBotaoFujao();
+      gerarCorações();
+    }
+
+    function respostaSim() {
+      trocarConteudo(`
+        <h1>😍 Sabia que você diria SIM! 😍</h1>
+        <p>Agora é oficial, Isabelle 💕</p>
+      `);
+      gerarCorações();
+      gerarGatinhos();
+    }
+
+    function respostaNao() {
+      trocarConteudo(`
+        <h1>😢 Que pena, Isabelle...</h1>
+        <p>Mas ainda continuo gostando muito de você 💖</p>
+      `);
+    }
+
+    function ativarBotaoFujao() {
+      const btnSim = document.getElementById("btnSim");
+      let movimentos = 0;
+
+      btnSim.addEventListener("mouseover", () => {
+        if (movimentos < 5) {
+          const caixa = document.getElementById("conteudo");
+          const maxX = caixa.offsetWidth - btnSim.offsetWidth - 40;
+          const maxY = caixa.offsetHeight - btnSim.offsetHeight - 40;
+
+          const randX = Math.floor(Math.random() * maxX);
+          const randY = Math.floor(Math.random() * maxY);
+
+          btnSim.style.position = "absolute";
+          btnSim.style.left = randX + "px";
+          btnSim.style.top = randY + "px";
+
+          movimentos++;
+        }
+      });
+    }
+
+    function gerarCorações() {
+      const caixa = document.getElementById("conteudo");
+      for (let i = 0; i < 12; i++) {
+        setTimeout(() => {
+          const coracao = document.createElement("div");
+          coracao.className = "coracao";
+          coracao.innerHTML = "❤️";
+          coracao.style.left = Math.random() * 300 + "px";
+          coracao.style.top = "200px";
+          caixa.appendChild(coracao);
+          setTimeout(() => coracao.remove(), 3000);
+        }, i * 300);
+      }
+    }
+
+    function gerarGatinhos() {
+      const caixa = document.getElementById("conteudo");
+      const gifs = [
+        "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+        "https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif",
+        "https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif"
+      ];
+      for (let i = 0; i < 6; i++) {
+        setTimeout(() => {
+          const gato = document.createElement("img");
+          gato.className = "gato";
+          gato.src = gifs[Math.floor(Math.random() * gifs.length)];
+          gato.style.left = Math.random() * 300 + "px";
+          gato.style.top = "200px";
+          caixa.appendChild(gato);
+          setTimeout(() => gato.remove(), 4000);
+        }, i * 500);
+      }
+    }
+
+    window.onload = telaInicial;
+  </script>
+</body>
+</html>
