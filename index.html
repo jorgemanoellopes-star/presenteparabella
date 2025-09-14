@@ -1,74 +1,244 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Código Confidencial</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  body {
-    background-color: #0f0f12;
-    color: #cfcfcf;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-  }
-  .secret-button {
-    position: fixed;
-    bottom: 5px;
-    right: 5px;
-    width: 20px;
-    height: 20px;
-    opacity: 0.3; /* 30% visibilidade */
-    cursor: pointer;
-    z-index: 9999;
-  }
-  .confidential {
-    display: none;
-    background-color: #151518;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-    box-shadow: 0 6px 18px rgba(0,0,0,.6);
-    transition: all 0.5s ease-in-out;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-  }
-  .confidential.show {
-    display: block;
-    opacity: 1;
-    max-height: 1000px; /* permite expandir com efeito */
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Presente para Isabelle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: white;
+      text-align: center;
+      margin-top: 50px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .caixa {
+      background: #111;
+      display: inline-block;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(255,255,255,0.2);
+      max-width: 450px;
+      transition: opacity 0.6s ease;
+      opacity: 1;
+      position: relative;
+    }
+    h1, h2 { margin-bottom: 20px; }
+    .botoes {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+    }
+    .botoes button {
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .sim { background: #4CAF50; color: white; position: relative; }
+    .nao { background: #f44336; color: white; }
+    .surpresaBtn { background: #ff9800; color: white; margin-top: 20px; }
+    #botaoNaoAcesso {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: white;
+      color: black;
+      opacity: 0.2;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      display: none;
+    }
+    #timer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffeb3b;
+      display: none;
+    }
+    @keyframes coracao {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+    }
+    .coracao { position: absolute; font-size: 24px; color: #e91e63; animation: coracao 3s linear forwards; pointer-events: none; }
+    .gato { position: absolute; width: 60px; pointer-events: none; animation: coracao 3s linear forwards; }
+  </style>
 </head>
 <body>
+  <div class="caixa" id="conteudo"></div>
+  <button id="botaoNaoAcesso" onclick="pedirSenha()">Não aperte</button>
+  <div id="timer"></div>
 
-<h1>Bem-vindo ao Código Confidencial</h1>
-<p>Este é um espaço seguro. Apenas quem conhece o segredo pode acessar o conteúdo confidencial.</p>
+  <script>
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const dataFinal = new Date('2028-01-21');
 
-<!-- Botão secreto escondido -->
-<div class="secret-button" id="secretBtn" title="Segredo"></div>
+    function trocarConteudo(html) { document.getElementById("conteudo").innerHTML = html; }
 
-<!-- Conteúdo confidencial -->
-<div class="confidential" id="confidentialContent">
-  <h2>Conteúdo Confidencial</h2>
-  <p>Parabéns! Você desbloqueou o conteúdo secreto. Aqui vai tudo que era confidencial.</p>
-</div>
-
-<script>
-  const secretBtn = document.getElementById('secretBtn');
-  const confidentialContent = document.getElementById('confidentialContent');
-  const correctPassword = "2114";
-
-  secretBtn.addEventListener('click', () => {
-    const input = prompt("Digite a senha para acessar o conteúdo confidencial:");
-    if(input === correctPassword) {
-      confidentialContent.classList.add('show');
-      alert("Senha correta! Conteúdo desbloqueado.");
-    } else {
-      alert("Senha incorreta! Acesso negado.");
+    // TELA INICIAL
+    function telaInicial() {
+      trocarConteudo(`
+        <h2>Esse é um presente confidencial e exclusivo.<br>Deseja abri-lo?</h2>
+        <div class="botoes">
+          <button onclick="mostrarGostos()">SIM</button>
+          <button onclick="alert('Ok, fica pra depois 😊')">NÃO</button>
+        </div>
+      `);
     }
-  });
-</script>
 
+    // MOSTRAR GOSTOS
+    function mostrarGostos() {
+      trocarConteudo(`
+        <h1>💖 Isabelle 💖</h1>
+        <p>Algumas coisas que você gosta:</p>
+        <ul style="text-align:left; font-size:16px; line-height:1.6;">
+          <li>🐱 Gatos</li>
+          <li>🎬 Doramas</li>
+          <li>🌷 Tulipas</li>
+          <li>👨‍👩‍👧‍👦 Seus primos: Enzo Miguel, Arthur Miguel, Luiza e Théo</li>
+        </ul>
+        <button class="surpresaBtn" onclick="mostrarDataComBotao()">Surpresa Final 🎁</button>
+      `);
+    }
+
+    // MOSTRAR DATA + BOTÃO "NÃO APERTE"
+    function mostrarDataComBotao() {
+      document.getElementById("botaoNaoAcesso").style.display = 'block';
+      document.getElementById("timer").style.display = 'block';
+      atualizarTimer();
+      trocarConteudo(`
+        <h2>🎁 Surpresa Final 🎁</h2>
+        <p>Clique no botão "Não aperte" para desbloquear a surpresa 💖</p>
+      `);
+    }
+
+    // PEDIR SENHA
+    function pedirSenha() {
+      const senha = prompt("Digite a senha:");
+      if(senha === "2114"){
+        mostrarPedido();
+      } else {
+        alert("Senha incorreta 😢");
+      }
+    }
+
+    // SURPRESA FINAL COM PEDIDO SIM/NÃO
+    function mostrarPedido() {
+      document.getElementById("botaoNaoAcesso").style.display = 'none';
+      document.getElementById("timer").style.display = 'none';
+      trocarConteudo(`
+        <h2>🎁 Surpresa Final 🎁</h2>
+        <div class="botoes">
+          <button id="btnSim" class="sim" onclick="respostaSim()">SIM</button>
+          <button class="nao" onclick="respostaNao()">NÃO</button>
+        </div>
+      `);
+      ativarBotaoFujao();
+      gerarCorações();
+    }
+
+    // RESPOSTA SIM
+    function respostaSim() {
+      trocarConteudo(`<h1>😍 Finalmente oficial meu amor, sempre nós 💕</h1>`);
+      gerarCorações();
+      gerarGatinhos();
+    }
+
+    // RESPOSTA NÃO
+    function respostaNao() {
+      trocarConteudo(`
+        <h1>😢 Que pena, Isabelle…</h1>
+        <p>Mas ainda continuo gostando muito de você 💖</p>
+      `);
+    }
+
+    // BOTÃO FUJÃO
+    function ativarBotaoFujao() {
+      const btnSim = document.getElementById("btnSim");
+      if(!btnSim) return;
+      let movimentos = 0;
+      btnSim.addEventListener(isMobile ? "touchstart" : "mouseover", () => {
+        if(movimentos < 5){
+          const caixa = document.getElementById("conteudo");
+          const maxX = caixa.offsetWidth - btnSim.offsetWidth - 20;
+          const maxY = caixa.offsetHeight - btnSim.offsetHeight - 20;
+          btnSim.style.position = "absolute";
+          btnSim.style.left = Math.floor(Math.random()*maxX) + "px";
+          btnSim.style.top = Math.floor(Math.random()*maxY) + "px";
+          movimentos++;
+        }
+      });
+    }
+
+    // ANIMAÇÕES DE CORAÇÕES
+    function gerarCorações() {
+      const caixa = document.getElementById("conteudo");
+      for(let i=0;i<12;i++){
+        setTimeout(()=>{
+          const coracao = document.createElement("div");
+          coracao.className="coracao";
+          coracao.innerHTML="❤️";
+          coracao.style.left=Math.random()*300+"px";
+          coracao.style.top="200px";
+          caixa.appendChild(coracao);
+          setTimeout(()=>coracao.remove(),3000);
+        },i*300);
+      }
+    }
+
+    // ANIMAÇÕES DE GATINHOS
+    function gerarGatinhos() {
+      const caixa = document.getElementById("conteudo");
+      const gifs = [
+        "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+        "https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif",
+        "https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif"
+      ];
+      for(let i=0;i<6;i++){
+        setTimeout(()=>{
+          const gato=document.createElement("img");
+          gato.className="gato";
+          gato.src=gifs[Math.floor(Math.random()*gifs.length)];
+          gato.style.left=Math.random()*300+"px";
+          gato.style.top="200px";
+          caixa.appendChild(gato);
+          setTimeout(()=>gato.remove(),4000);
+        },i*500);
+      }
+    }
+
+    // TIMER CENTRALIZADO
+    function atualizarTimer(){
+      const timer=document.getElementById("timer");
+      function atualizar(){
+        const agora=new Date();
+        const diff=dataFinal - agora;
+        if(diff>0){
+          const dias=Math.floor(diff/(1000*60*60*24));
+          const horas=Math.floor((diff/(1000*60*60))%24);
+          const minutos=Math.floor((diff/(1000*60))%60);
+          const segundos=Math.floor((diff/1000)%60);
+          timer.textContent=`Faltam ${dias}d ${horas}h ${minutos}m ${segundos}s para a surpresa final`;
+        } else {
+          timer.textContent=`🎉 A surpresa final está disponível! 🎉`;
+        }
+      }
+      atualizar();
+      setInterval(atualizar,1000);
+      if(isMobile) timer.style.fontSize='16px';
+    }
+
+    window.onload = telaInicial;
+  </script>
 </body>
 </html>
